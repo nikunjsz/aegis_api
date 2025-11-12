@@ -1,0 +1,12 @@
+Dataset/
+notusing/
+Report/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env/
+.venv/
+venv/
+.DS_Store
+Thumbs.db
