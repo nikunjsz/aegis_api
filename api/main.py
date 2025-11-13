@@ -40,21 +40,20 @@ from pydantic import BaseModel
 import joblib
 import pandas as pd
 from pathlib import Path
-
-# Import the feature engineering class if needed
-from crime_features import CrimeFeatureEngineer
+from crime_features import CrimeFeatureEngineer  # your feature class
 
 app = FastAPI(title="Aegis Safety Score API")
 
-# ✅ Add CORS middleware
+# --- CORS setup ---
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # You can restrict later e.g. ["https://yourflutterapp.com"]
+    allow_origins=["*"],  # or restrict to your Flutter web/app origin
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["*"],  # allow OPTIONS, GET, POST, etc.
     allow_headers=["*"],
 )
 
+# --- Model setup ---
 BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = BASE_DIR / "safety_model_bundle.pkl"
 
@@ -77,6 +76,7 @@ def predict(req: PredictRequest):
 
     y = model.predict(df)[0]
     return {"severity_score": float(y)}
+
 
 # Command to run locally:
 # uvicorn api.main:app --host 0.0.0.0 --port 10000
